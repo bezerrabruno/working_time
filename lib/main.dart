@@ -11,5 +11,5 @@ Future<void> main() async {
 
 Future<void> initApp() async {
   await Hive.initFlutter();
-  await Hive.openBox('day');
+  await Hive.openBox('sprint');
 }

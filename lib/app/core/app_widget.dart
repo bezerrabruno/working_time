@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/app/m_sprint/sprint_binding.dart';
 import '/app/m_sprint/pages/sprint_page.dart';
 
 import 'app_theme.dart';
@@ -15,6 +16,7 @@ class AppWidget extends StatelessWidget {
       theme: ThemeApp.dark(),
       debugShowCheckedModeBanner: false,
       home: const SprintPage(),
+      initialBinding: SprintBinding(),
     );
   }
 }
