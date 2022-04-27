@@ -16,7 +16,7 @@ class SprintBarWidget extends StatelessWidget {
         SizedBox(
           width: 300,
           child: Text(
-            'Sprint: 13',
+            'Sprint: 14',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w700,
@@ -26,7 +26,7 @@ class SprintBarWidget extends StatelessWidget {
         SizedBox(
           width: 300,
           child: Text(
-            'Initial day: 01',
+            'Initial day: 25',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w700,
@@ -36,7 +36,7 @@ class SprintBarWidget extends StatelessWidget {
         SizedBox(
           width: 300,
           child: Text(
-            'Final day: 21',
+            'Final day: 12',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w700,
