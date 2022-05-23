@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/app/m_sprint/sprint_binding.dart';
-import '/app/m_sprint/pages/sprint_page.dart';
-
-import 'app_theme.dart';
+import 'routes/pages.dart';
+import 'theme/app_theme.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({Key? key}) : super(key: key);
@@ -15,8 +13,8 @@ class AppWidget extends StatelessWidget {
       title: 'Working Time',
       theme: ThemeApp.dark(),
       debugShowCheckedModeBanner: false,
-      home: const SprintPage(),
-      initialBinding: SprintBinding(),
+      initialRoute: Routes.listSprint,
+      getPages: AppPages.pages,
     );
   }
 }

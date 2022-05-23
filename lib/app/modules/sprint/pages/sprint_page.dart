@@ -56,8 +56,8 @@ class _SprintPageState extends State<SprintPage> {
                   ),
                   Expanded(
                     child: CalendarDatePicker(
-                      firstDate: DateTime(2022, 4, 25),
-                      lastDate: DateTime(2022, 5, 12),
+                      firstDate: DateTime(2022, 5, 13),
+                      lastDate: DateTime(2022, 6, 02),
                       initialDate: controller.currentDate,
                       onDateChanged: (date) => controller.getInfo(date),
                     ),
