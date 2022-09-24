@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
+import 'app/core/app_module.dart';
 import 'app/core/app_widget.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await initApp();
-  runApp(const AppWidget());
-}
-
-Future<void> initApp() async {
-  await Hive.initFlutter();
-  await Hive.openBox('sprint');
+  runApp(
+    ModularApp(
+      module: AppModule(),
+      child: const AppWidget(),
+    ),
+  );
 }

@@ -4,7 +4,6 @@ class ThemeApp {
   static ThemeData dark() {
     return ThemeData(
       colorScheme: const ColorScheme.dark(),
-      scaffoldBackgroundColor: Colors.black,
     );
   }
 }
