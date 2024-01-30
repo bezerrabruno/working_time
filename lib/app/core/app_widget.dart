@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import 'routes/pages.dart';
-import 'theme/app_theme.dart';
+import 'package:working_time/app/core/routes/app_pages.dart';
 
 class AppWidget extends StatelessWidget {
-  const AppWidget({Key? key}) : super(key: key);
+  const AppWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       title: 'Working Time',
-      theme: ThemeApp.dark(),
-      debugShowCheckedModeBanner: false,
-      initialRoute: Routes.listSprint,
-      getPages: AppPages.pages,
+      initialRoute: AppRoutes.listSprint,
+      routes: AppPages.pages,
     );
   }
 }

@@ -1,77 +1,60 @@
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter/material.dart';
+import 'package:working_time/app/core/enums/page_state_enum.dart';
+import 'package:working_time/app/core/services/app_service.dart';
+import 'package:working_time/app/db/boxes/day_box.dart';
+import 'package:working_time/app/db/entities/day_entity.dart';
+import 'package:working_time/app/db/entities/sprint_entity.dart';
 
-import '../models/day.dart';
+class SprintController extends ChangeNotifier {
+  final DayBox dayBox;
 
-enum StatusType { success, load, error, empty }
+  SprintController(this.dayBox);
 
-class SprintController extends GetxController {
-  var box = Hive.box('sprint');
+  /// Vars
+  PageStateEnum _pageState = PageStateEnum.load;
 
-  final _state = StatusType.load.obs;
-  StatusType get state => _state.value;
-  set state(StatusType value) => _state.value = value;
+  SprintEntity? _sprintEntity;
+  DayEntity? _dayEntity;
+  DateTime? _date;
 
-  final _subState = StatusType.load.obs;
-  StatusType get subState => _subState.value;
-  set subState(StatusType value) => _subState.value = value;
+  /// Uses
+  PageStateEnum get pageState => _pageState;
+  SprintEntity? get sprint => _sprintEntity;
+  DayEntity? get day => _dayEntity;
 
-  final _currentDate = DateTime(2022).obs;
-  DateTime get currentDate => _currentDate.value;
-  set currentDate(DateTime value) => _currentDate.value = value;
+  Future<void> init() async {
+    _pageState = PageStateEnum.load;
+    notifyListeners();
 
-  final _dayInfo = Day().obs;
-  Day get dayInfo => _dayInfo.value;
-  set dayInfo(Day value) => _dayInfo.value = value;
+    _sprintEntity = appService.sprintAtual;
 
-  initilState() async {
-    currentDate = DateTime.now();
-    await getInfo(currentDate);
-    subState = StatusType.success;
-    state = StatusType.success;
+    _dayEntity =
+        await dayBox.get(_sprintEntity!.initialDate.millisecondsSinceEpoch);
+
+    _date = _sprintEntity!.initialDate;
+
+    _pageState = PageStateEnum.success;
+    notifyListeners();
   }
 
-  getInfo(DateTime date) async {
-    subState = StatusType.load;
+  Future<void> addDay() async {
+    DayEntity day = DayEntity(date: _date!, time: 0, comment: '');
 
-    final result = await box.get('${date.year}/${date.month}/${date.day}');
+    await dayBox.update(day);
 
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    if (result != null) {
-      dayInfo = Day.fromMap(result);
-      subState = StatusType.success;
-    } else {
-      final save = Day(
-        date: date,
-        day: date.day,
-        iTime: 0,
-        fTime: 5,
-      );
-
-      await box.put('${date.year}/${date.month}/${date.day}', Day.toMap(save));
-
-      getInfo(date);
-    }
+    await changeDay(_date!);
   }
 
-  saveCard() async {
-    await box.put(
-        '${dayInfo.date!.year}/${dayInfo.date!.month}/${dayInfo.date!.day}',
-        Day.toMap(dayInfo));
+  Future<void> changeDay(DateTime date) async {
+    _date = date;
 
-    Get.showSnackbar(
-      const GetSnackBar(
-        title: 'Dia Salvo',
-        duration: Duration(seconds: 2),
-        messageText: Text('Seu fia foi salvo com sucesso'),
-        snackPosition: SnackPosition.TOP,
-      ),
-    );
+    _dayEntity = await dayBox.get(date.millisecondsSinceEpoch);
+    notifyListeners();
   }
 
-  clear() {
-    box.clear();
+  Future<void> updateDay(DayEntity day) async {
+    await dayBox.update(day);
+
+    await changeDay(_date!);
   }
 }

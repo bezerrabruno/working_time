@@ -1,6 +1,6 @@
-part of 'pages.dart';
+part of 'app_pages.dart';
 
-abstract class Routes {
+abstract class AppRoutes {
   static const listSprint = '/list-sprint';
   static const sprint = '/sprint';
 }

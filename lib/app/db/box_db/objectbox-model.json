@@ -1,0 +1,79 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:5675766804227349914",
+      "lastPropertyId": "4:1517808283418266885",
+      "name": "DayEntity",
+      "properties": [
+        {
+          "id": "1:2671847129005100901",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6556580537126897230",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "3:4551408181635290557",
+          "name": "time",
+          "type": 8
+        },
+        {
+          "id": "4:1517808283418266885",
+          "name": "comment",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:5199159190633260004",
+      "lastPropertyId": "6:4422840579414952673",
+      "name": "SprintEntity",
+      "properties": [
+        {
+          "id": "1:7663230687539724730",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:636108963483251538",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "5:2789476117015799077",
+          "name": "initialDate",
+          "type": 10
+        },
+        {
+          "id": "6:4422840579414952673",
+          "name": "finalDate",
+          "type": 10
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:5199159190633260004",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    3717051831630531000,
+    5365798992828605063
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}

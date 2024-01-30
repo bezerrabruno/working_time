@@ -1,50 +1,59 @@
-import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-import 'package:working_time/app/modules/list_sprint/widgets/dialog_add_sprint.dart';
+import 'package:flutter/material.dart';
+import 'package:working_time/app/core/enums/page_state_enum.dart';
+import 'package:working_time/app/db/boxes/sprint_box.dart';
+import 'package:working_time/app/db/entities/sprint_entity.dart';
+import 'package:working_time/app/modules/list_sprint/widgets/add_sprint_dialog.dart';
 
-import '../models/sprint.dart';
+class ListSprintController extends ChangeNotifier {
+  final SprintBox sprintBox;
 
-enum StatusType { success, load, error, empty }
+  ListSprintController(this.sprintBox);
 
-class ListSprintController extends GetxController {
-  var box = Hive.box('sprint');
+  /// Vars
+  PageStateEnum _pageState = PageStateEnum.load;
 
-  final _state = StatusType.load.obs;
-  StatusType get state => _state.value;
-  set state(StatusType value) => _state.value = value;
+  List<SprintEntity> _sprints = [];
 
-  final _sprints = <Sprint>[].obs;
-  List<Sprint> get sprints => _sprints;
-  set sprints(List<Sprint> value) => _sprints.value = value;
+  /// Uses
+  PageStateEnum get pageState => _pageState;
 
-  @override
-  void onInit() {
-    getSprints();
-    super.onInit();
-  }
+  List<SprintEntity> get sprints => _sprints;
 
-  getSprints() async {
-    state = StatusType.load;
+  /// funcs
+  Future<void> getSprints() async {
+    _pageState = PageStateEnum.load;
 
-    List? result = await box.get('sprints');
+    notifyListeners();
 
-    await Future.delayed(const Duration(seconds: 1));
+    try {
+      _sprints = await sprintBox.getAll();
 
-    if (result != null) {
-      sprints = Sprint.fromMap(result);
-      state = StatusType.success;
-    } else {
-      await box.put('sprints', []);
-      result = [];
-      state = StatusType.success;
+      if (_sprints.isEmpty) {
+        _pageState = PageStateEnum.empty;
+      } else {
+        _pageState = PageStateEnum.success;
+      }
+    } catch (e) {
+      _pageState = PageStateEnum.error;
+    } finally {
+      notifyListeners();
     }
   }
 
-  addSprint() {
-    Get.dialog(const DialogAddSprint());
-  }
+  void addSprint(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AddSprintDialog(
+          finish: (sprint) async {
+            sprintBox.update(sprint);
 
-  clear() {
-    box.clear();
+            Navigator.of(context).pop();
+
+            await getSprints();
+          },
+        );
+      },
+    );
   }
 }
