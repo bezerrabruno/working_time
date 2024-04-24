@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:working_time/app/core/Utils/date_format.dart';
-import 'package:working_time/app/db/entities/sprint_entity.dart';
+import 'package:working_time/app/core/Utils/date_format_util.dart';
 import 'package:working_time/app/core/widgets/app_text_field.dart';
+import 'package:working_time/app/db/entities/sprint_entity.dart';
 
 class AddSprintDialog extends StatefulWidget {
   final Function(SprintEntity) finish;
@@ -35,11 +35,13 @@ class _AddSprintDialogState extends State<AddSprintDialog> {
               const Padding(
                 padding: EdgeInsets.only(bottom: 24),
                 child: Text(
-                  'Adicionando uma nova sprint',
+                  'Sprint',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.deepPurple),
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurple,
+                  ),
                 ),
               ),
               Padding(
@@ -71,7 +73,7 @@ class _AddSprintDialogState extends State<AddSprintDialog> {
 
                           if (initialDate != null) {
                             initialDateController.text =
-                                DateFormat.basicFormat(initialDate!);
+                                DateFormatUtil.basicFormat(initialDate!);
                           }
                         },
                       ),
@@ -94,7 +96,7 @@ class _AddSprintDialogState extends State<AddSprintDialog> {
 
                           if (finalDate != null) {
                             finalDateController.text =
-                                DateFormat.basicFormat(finalDate!);
+                                DateFormatUtil.basicFormat(finalDate!);
                           }
                         },
                       ),
@@ -135,7 +137,7 @@ class _AddSprintDialogState extends State<AddSprintDialog> {
 
                           widget.finish(entity);
                         },
-                        child: const Text('Adicionar'),
+                        child: const Text('Add'),
                       ),
                     ),
                   ),

@@ -4,7 +4,7 @@ import 'package:working_time/app/modules/sprint/controllers/sprint_controller.da
 import 'package:working_time/app/modules/sprint/widgets/day_card.dart';
 import 'package:working_time/app/modules/sprint/widgets/sprint_bar.dart';
 
-class SprintPage extends StatelessWidget {
+class SprintPage extends StatefulWidget {
   final SprintController sprintController;
 
   const SprintPage(
@@ -13,14 +13,19 @@ class SprintPage extends StatelessWidget {
   });
 
   @override
+  State<SprintPage> createState() => _SprintPageState();
+}
+
+class _SprintPageState extends State<SprintPage> {
+  @override
   Widget build(BuildContext context) {
-    sprintController.init();
+    widget.sprintController.init();
 
     return Scaffold(
-      body: AnimatedBuilder(
-        animation: sprintController,
+      body: ListenableBuilder(
+        listenable: widget.sprintController,
         builder: (context, _) {
-          switch (sprintController.pageState) {
+          switch (widget.sprintController.pageState) {
             case PageStateEnum.load:
               return const Center(
                 child: CircularProgressIndicator(),
@@ -29,7 +34,15 @@ class SprintPage extends StatelessWidget {
             case PageStateEnum.empty:
             case PageStateEnum.error:
               return const Center(
-                child: Text('Algo aconteceu, tente novamente!'),
+                child: Text(
+                  'Algo aconteceu, tente novamente!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurple,
+                  ),
+                ),
               );
 
             case PageStateEnum.success:
@@ -38,7 +51,7 @@ class SprintPage extends StatelessWidget {
                 child: Column(
                   children: [
                     SprintBar(
-                      sprintEntity: sprintController.sprint!,
+                      sprintEntity: widget.sprintController.sprint!,
                     ),
                     const Divider(
                       color: Colors.white,
@@ -46,25 +59,27 @@ class SprintPage extends StatelessWidget {
                     ),
                     Expanded(
                       child: CalendarDatePicker(
-                        firstDate: sprintController.sprint!.initialDate,
-                        lastDate: sprintController.sprint!.finalDate,
-                        initialDate: sprintController.sprint!.initialDate,
+                        firstDate: widget.sprintController.sprint!.initialDate,
+                        lastDate: widget.sprintController.sprint!.finalDate,
+                        initialDate:
+                            widget.sprintController.sprint!.initialDate,
                         onDateChanged: (date) =>
-                            sprintController.changeDay(date),
+                            widget.sprintController.changeDay(date),
                       ),
                     ),
                     Expanded(
-                      child: sprintController.day == null
+                      child: widget.sprintController.day == null
                           ? InkWell(
-                              onTap: () => sprintController.addDay(),
+                              onTap: () => widget.sprintController.addDay(),
                               splashColor: Colors.transparent,
                               child: const Center(
-                                child: Text('Adicione Anotações Aqui'),
+                                child: Text('Clique e adicione uma anotação'),
                               ),
                             )
                           : DayCard(
-                              dayEntity: sprintController.day!,
-                              onSave: (day) => sprintController.updateDay(day),
+                              dayEntity: widget.sprintController.day!,
+                              onSave: (day) =>
+                                  widget.sprintController.updateDay(day),
                             ),
                     ),
                   ],
@@ -76,36 +91,3 @@ class SprintPage extends StatelessWidget {
     );
   }
 }
-
-//           case StatusType.success:
-//             return Padding(
-//               padding: const EdgeInsets.all(32.0),
-//               child: Column(
-//                 children: [
-//                   SprintBarWidget(),
-//                   const Divider(
-//                     color: Colors.white,
-//                     height: 32,
-//                   ),
-//                   Expanded(
-//                     child: CalendarDatePicker(
-//                       firstDate: DateTime(2022, 5, 13),
-//                       lastDate: DateTime(2022, 6, 02),
-//                       initialDate: controller.currentDate,
-//                       onDateChanged: (date) => controller.getInfo(date),
-//                     ),
-//                   ),
-//                   Expanded(
-//                     child: CardDayWidget(),
-//                   ),
-//                 ],
-//               ),
-//             );
-
-//           default:
-//             return const SizedBox();
-//         }
-//       }),
-//     );
-//   }
-// }

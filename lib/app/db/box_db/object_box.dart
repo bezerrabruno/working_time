@@ -10,11 +10,12 @@ class ObjectBox {
 
   Future<void> _initStore() async {
     final directory = await getApplicationDocumentsDirectory();
+    final path = '${directory.path}\\working_time';
 
-    if (Store.isOpen(directory.path)) {
-      store = Store.attach(getObjectBoxModel(), directory.path);
+    if (Store.isOpen(path)) {
+      store = Store.attach(getObjectBoxModel(), path);
     } else {
-      store = await openStore(directory: directory.path);
+      store = await openStore(directory: path);
     }
   }
 

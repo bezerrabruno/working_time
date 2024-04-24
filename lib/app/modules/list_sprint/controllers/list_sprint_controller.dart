@@ -23,6 +23,8 @@ class ListSprintController extends ChangeNotifier {
   Future<void> getSprints() async {
     _pageState = PageStateEnum.load;
 
+    await Future.delayed(const Duration(seconds: 1));
+
     notifyListeners();
 
     try {

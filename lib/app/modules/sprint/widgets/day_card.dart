@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:working_time/app/core/Utils/date_format.dart';
+import 'package:working_time/app/core/Utils/date_format_util.dart';
 import 'package:working_time/app/core/widgets/app_text_field.dart';
 import 'package:working_time/app/db/entities/day_entity.dart';
 
@@ -18,70 +18,83 @@ class _DayCardState extends State<DayCard> {
   final TextEditingController comentarioController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     horasController.text = widget.dayEntity.time.toString();
     comentarioController.text = widget.dayEntity.comment;
 
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.deepPurpleAccent[100],
+        color: Colors.deepPurple.shade300,
       ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: LayoutBuilder(
+        builder: (context, box) {
+          final height = box.maxHeight / 100;
+          int lines = 1;
+
+          if (height <= 2) {
+            lines = 1;
+          }
+
+          if (height > 2) {
+            final teste = height - 2;
+            lines += (teste * 4).toInt();
+          }
+
+          return Column(
             children: [
-              SizedBox(
-                width: 300,
-                child: Text(
-                  'Data: ${DateFormat.basicFormat(widget.dayEntity.date)}',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    'Data: ${DateFormatUtil.basicFormat(widget.dayEntity.date)}',
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
+                  SizedBox(
+                    width: 100,
+                    child: AppTextField(
+                      controller: horasController,
+                      hintText: 'Horas',
+                      enabled: true,
+                      mode: 1,
+                      onChange: (change) {
+                        widget.dayEntity.time = double.tryParse(change) ?? 0;
+
+                        widget.onSave(widget.dayEntity);
+                      },
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
-                width: 300,
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 child: AppTextField(
-                  controller: horasController,
-                  hintText: 'Horas',
+                  controller: comentarioController,
+                  hintText: 'Notas',
                   enabled: true,
-                ),
-              ),
-              SizedBox(
-                width: 300,
-                child: GestureDetector(
-                  onTap: () {
-                    widget.dayEntity.time =
-                        double.tryParse(horasController.text)!;
-                    widget.dayEntity.comment = comentarioController.text;
+                  mode: 1,
+                  maxLines: lines,
+                  onChange: (change) {
+                    widget.dayEntity.comment = change;
 
                     widget.onSave(widget.dayEntity);
                   },
-                  child: const Icon(
-                    Icons.save_as_outlined,
-                    size: 40,
-                    color: Colors.white,
-                  ),
                 ),
               ),
             ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: SizedBox(
-              child: AppTextField(
-                controller: comentarioController,
-                hintText: 'Comentarios',
-                enabled: true,
-              ),
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
