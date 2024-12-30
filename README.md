@@ -1,8 +1,14 @@
-# Work Time v1.2.6+3
+# Working Time 
+
+**v1.2.7 (atualizado em: 30/12/2024)**
+
+## Sobre o projeto
 
 O WorkTime é um aplicativo que permite aos usuários monitorar e registrar o tempo de trabalho de forma eficiente.
 Ele oferece uma interface intuitiva e fácil de usar, permitindo que os usuários criem sprints,
 controlem o tempo gasto em diferentes dias e adicionem comentarios pertinentes.
+
+O tecnologia usada para criação do aplicativo foi DART/FLUTTER e as versões em uso são as mais atuais dentro da data de atualização.
 
 ## Principais Recursos:
 
@@ -20,8 +26,5 @@ Opções para adicionar notas ou categorias às sessões de trabalho para organi
 ## Público-Alvo:
 
 Profissionais autônomos, freelancers, estudantes e qualquer pessoa que deseje acompanhar e melhorar sua produtividade e gestão de tempo.
-
-## Tecnologias Utilizadas:
-Flutter para desenvolvimento multiplataforma (Android e iOS), ObjectBox para armazenamento local de dados, e gráficos para visualização de dados.
 
 # Status: Finalizado.
